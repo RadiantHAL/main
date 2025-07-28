@@ -1,10 +1,7 @@
 import random
 import colorama
-from colorama import Fore
 
-colorama.init()
-
-words = ("farmer","moment","safety","winner","system","throat","recipe","camera","growth",
+word = ("farmer","moment","safety","winner","system","throat","recipe","camera","growth",
          "studio","dealer","thanks","theory","poetry","police","extent","person","drawer",
          "county","client","singer","basket","aspect","engine","writer","affair","dinner",
          "health","sample","sister","advice","method","cousin","member","energy","editor",
@@ -14,81 +11,71 @@ words = ("farmer","moment","safety","winner","system","throat","recipe","camera"
 hangman = {
     0: ("     ",
         "     ",
-        "     "),
+        "     "),         
     1: (" o   ",
         "     ",
-        "     "),
-    2: (" o   ",
-        " |   ",
-        "     "),
-    3: (" o   ",
-        "/|   ",
-        "     "),
-    4: (" o   ",
-        "/|\\  ",
-        "     "),
-    5: (" o   ",
-        "/|\\  ",
-        "/    "),
-    6: (" o   ",
-        "/|\\  ",
-        "/ \\  ")
+        "     "),         
+    2: ("  o  ",
+        "  |  ",
+        "     "),         
+    3: ("  o  ",
+        " /|  ",
+        "     "),         
+    4: ("  o  ",
+        " /|\\ ",
+        "     "),         
+    5: ("  o  ",
+        " /|\\ ",
+        " /   "),         
+    6: ("  o  ",
+        " /|\\ ",
+        " / \\ ")          
 }
-
-def display_hangman(stage):
-    print("\n".join(hangman[stage]))
-
-def hint_color(player, random_word):
-    hint = ""
-    used_indices = []
+def random_check():
+        randomer=random.choice(word)
+def hint_color(player,randomer,num):
+    again_list=[]
     for i in range(6):
-        if player[i] == random_word[i]:
-            hint += Fore.GREEN + player[i]
-            used_indices.append(i)
-        else:
-            hint += Fore.WHITE+"_" 
-
-    
-    for i in range(6):
-        if hint[i] != "_":
-            continue
-        if player[i] in random_word:
-            # Check if the letter exists in unused positions
-            found = False
-            for j in range(6):
-                if j not in used_indices and player[i] == random_word[j]:
-                    found = True
-                    used_indices.append(j)
-                    break
-            if found:
-                hint = hint[:i] + Fore.YELLOW + player[i] + hint[i+1:]
+        if player[i]==randomer[i]:
+            print(colorama.Fore.GREEN+f"{player[i]}",end="")   
+        elif player[i] in randomer:
+            if again_list.count(player[i]) < randomer.count(player[i]):
+                print(colorama.Fore.YELLOW + f"{player[i]}", end="")
+                again_list.append(player[i])
             else:
-                hint = hint[:i] + Fore.RED + player[i] + hint[i+1:]
+                print(colorama.Fore.RED + f"{player[i]}", end="")
+                again_list.append(player[i])
         else:
-            hint = hint[:i] + Fore.RED + player[i] + hint[i+1:]
+            print(colorama.Fore.RED + f"{player[i]}", end="")
+            again_list.append(player[i])
+    print()
+    if again_list!=[]:
+        hangman_check(hangman,num)
 
-    print(hint + Fore.WHITE)
-
+def hangman_check(hangman,num):
+     print(colorama.Fore.WHITE+f"{hangman[num][0]}")
+     print(colorama.Fore.WHITE+f"{hangman[num][1]}")
+     print(colorama.Fore.WHITE+f"{hangman[num][2]}")
 def main():
-    random_word = random.choice(words)
-    attempts = 0
-    max_attempts = 6
-
-    print("🎮 Welcome to Hangman Wordle!\n")
-    while attempts < max_attempts:
-        player = input(Fore.WHITE + f"Enter a 6-letter word ({max_attempts - attempts} attempts left): ").lower()
-        if player.isalpha() and len(player) == 6:
-            hint_color(player, random_word)
-            if player == random_word:
-                print(Fore.CYAN + "🎉 Congratulations! You guessed it right.")
-                break
-            else:
-                attempts += 1
-                display_hangman(attempts)
-        else:
-            print(Fore.LIGHTRED_EX + "⛔ Please enter a valid 6-letter alphabetic word.")
-
-    else:
-        print(Fore.RED + f"\n💀 Game Over! The correct word was: {random_word}")
+    num_1=6
+    num_2=0
+    randomer=random.choice(word)
+    while True:
+        if num_1<0 :
+            print("Game over")
+            break 
+        player=input(colorama.Fore.WHITE+f"Enter your choice word (only {num_1+1} turn left) : ")
+        if player.isalpha() and len(player)==6:
+            hint_color(player,randomer,num_2)   
+            num_2+=1
+            num_1-=1 
+            if player==randomer:
+                print(colorama.Fore.WHITE+"you have won the gussing game")
+                break       
+        elif not player.isalpha() and len(player)!=6 and player!="" and player!=" ":
+            print(colorama.Fore.WHITE+"Enter in valid")
+            print(colorama.Fore.WHITE+"number/symbols/size word don't equal to 6 ") 
+              
 if __name__=="__main__":
+    main()
     main()
