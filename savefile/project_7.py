@@ -12,7 +12,7 @@ hangman = {
     0: ("     ",
         "     ",
         "     "),         
-    1: (" o   ",
+    1: ("  o  ",
         "     ",
         "     "),         
     2: ("  o  ",
@@ -31,8 +31,9 @@ hangman = {
         " /|\\ ",
         " / \\ ")          
 }
-def random_check():
-        randomer=random.choice(word)
+#def random_check():
+ #randomer=random.choice(word)
+         
 def hint_color(player,randomer,num):
     again_list=[]
     for i in range(6):
@@ -53,25 +54,36 @@ def hint_color(player,randomer,num):
         hangman_check(hangman,num)
 
 def hangman_check(hangman,num):
+         
      print(colorama.Fore.WHITE+f"{hangman[num][0]}")
      print(colorama.Fore.WHITE+f"{hangman[num][1]}")
      print(colorama.Fore.WHITE+f"{hangman[num][2]}")
+         
 def main():
+         
     num_1=6
     num_2=0
+         
     randomer=random.choice(word)
+         
     while True:
+         print(colorama.Fore.RED+"double check your writing for 2 or more time same aplphabet ")
+             
         if num_1<0 :
             print("Game over")
             break 
+                 
         player=input(colorama.Fore.WHITE+f"Enter your choice word (only {num_1+1} turn left) : ")
+
         if player.isalpha() and len(player)==6:
             hint_color(player,randomer,num_2)   
             num_2+=1
             num_1-=1 
+                 
             if player==randomer:
                 print(colorama.Fore.WHITE+"you have won the gussing game")
-                break       
+                break 
+                     
         elif not player.isalpha() and len(player)!=6 and player!="" and player!=" ":
             print(colorama.Fore.WHITE+"Enter in valid")
             print(colorama.Fore.WHITE+"number/symbols/size word don't equal to 6 ") 
